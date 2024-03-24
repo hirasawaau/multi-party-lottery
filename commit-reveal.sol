@@ -22,7 +22,7 @@ contract CommitReveal {
   }
   event CommitHash(address sender, bytes32 dataHash, uint64 block);
 
-  function revealAnswer(int8 answer,bytes32 salt) public {
+  function revealAnswer(uint8 answer,bytes32 salt) public {
     //make sure it hasn't been revealed yet and set it to revealed
     require(commits[msg.sender].revealed==false,"CommitReveal::revealAnswer: Already revealed");
     commits[msg.sender].revealed=true;
@@ -30,9 +30,9 @@ contract CommitReveal {
     require(getAnswerHash(answer,salt)==commits[msg.sender].commit,"CommitReveal::revealAnswer: Revealed hash does not match commit");
     emit RevealAnswer(msg.sender,answer,salt);
   }
-  event RevealAnswer(address sender, int8 answer, bytes32 salt);
+  event RevealAnswer(address sender, uint8 answer, bytes32 salt);
 
-  function getAnswerHash(int8 data,bytes32 salt) public view returns(bytes32){
+  function getAnswerHash(uint8 data,bytes32 salt) public view returns(bytes32){
     return keccak256(abi.encodePacked(address(this), data, salt));
   }
 }
