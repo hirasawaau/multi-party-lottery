@@ -27,7 +27,7 @@ contract CommitReveal {
     require(commits[msg.sender].revealed==false,"CommitReveal::revealAnswer: Already revealed");
     commits[msg.sender].revealed=true;
     //require that they can produce the committed hash
-    require(getAnswerHashSalt(answer,salt)==commits[msg.sender].commit,"CommitReveal::revealAnswer: Revealed hash does not match commit");
+    require(getHashSalt(answer,salt)==commits[msg.sender].commit,"CommitReveal::revealAnswer: Revealed hash does not match commit");
     emit RevealAnswer(msg.sender,answer,salt);
   }
   event RevealAnswer(address sender, uint8 answer, bytes32 salt);
@@ -36,7 +36,7 @@ contract CommitReveal {
     return keccak256(abi.encodePacked(address(this), data));
   }
 
-  function getAnswerHashSalt(uint8 data,bytes32 salt) public view returns(bytes32){
+  function getHashSalt(uint8 data,bytes32 salt) public view returns(bytes32){
     return keccak256(abi.encodePacked(address(this), data, salt));
   }
 }
