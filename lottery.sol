@@ -171,7 +171,7 @@ contract Lottery is CommitReveal {
         _;
     }
 
-    function stg3_announce_winner() public onlyOwner {
+    function stg3_announce_winner() public {
         require(
             currentState == 3,
             "Error(lottery::stg3_announce_winner): Stage only 3."
@@ -194,9 +194,11 @@ contract Lottery is CommitReveal {
 
             address payable winner_payable = payable(idToAddress[winner]);
             address payable owner_payable = payable(owner);
+            address payable sender_payable = payable(msg.sender)
 
             winner_payable.transfer((address(this).balance * 98) / 100);
-            owner_payable.transfer(address(this).balance);
+            owner_payable.transfer(address(this).balance / 2);
+            sender_payable.transfer(address(this).balance);
         } else {
             address payable owner_payable = payable(owner);
             owner_payable.transfer(address(this).balance);
